@@ -4,4 +4,5 @@ pip install langchain-community
 langchain
 langchain-openai
 tiktoken
+pdfplumber
 PyPDF2
