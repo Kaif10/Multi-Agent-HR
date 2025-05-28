@@ -1,0 +1,10 @@
+# Python venv & caches
+.venv/
+__pycache__/
+*.pyc
+
+# Streamlit artifacts
+.streamlit/
+
+# Environment variables
+.env
