@@ -1,5 +1,6 @@
 streamlit
 openai
+pip install langchain-community
 langchain
 langchain-openai
 tiktoken
