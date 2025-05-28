@@ -1,0 +1,7 @@
+# .streamlit/config.toml
+[theme]
+base = "dark"              # built-in dark theme
+primaryColor = "#00c896"   # (optional) accent buttons
+secondaryBackgroundColor = "#1e1e1e"
+textColor = "#f0f0f0"
+font = "sans serif"
