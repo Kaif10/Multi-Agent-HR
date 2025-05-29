@@ -3,7 +3,18 @@ import tempfile
 from kubernetes_ai_agents import verify_resume_pipeline  # ⬅️ Replace or paste your actual pipeline here
 
 st.set_page_config(page_title="CV Verifier", page_icon="📄", layout="wide")
-st.title("📄CV Verifier – Multi-Agent Resume Scanner")
+st.title("📄CV Verifier – Multi-Agent HR")
+# 🌟 Add a clear description
+st.markdown(
+    """
+    Welcome to **CV Verifier** – an AI-powered tool built with multiple intelligent agents to help recruiters and HRs
+    quickly distinguish genuine resumes from fake ones.
+
+
+    Upload a PDF CV to get started!
+    """,
+    unsafe_allow_html=True
+)
 
 uploaded_file = st.file_uploader("Upload your CV (PDF only)", type=["pdf"])
 
