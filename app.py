@@ -11,7 +11,7 @@ st.markdown(
     quickly distinguish genuine resumes from fake ones.
 
 
-    Upload a PDF CV to get started!
+  
     """,
     unsafe_allow_html=True
 )
