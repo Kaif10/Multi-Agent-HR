@@ -9,9 +9,7 @@ st.markdown(
     """
     Welcome to **CV Verifier** – an AI-powered tool built with multiple intelligent agents to help recruiters and HRs
     quickly distinguish genuine resumes from fake ones.
-
-
-  
+      
     """,
     unsafe_allow_html=True
 )

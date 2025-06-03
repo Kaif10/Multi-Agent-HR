@@ -54,10 +54,11 @@ def extract_resume_info(resume_text):
         - Education
         - Work Experience (company, title, duration, summary)
         - Projects (title and short description)
-        - Extras (All the other relevant things needed for the HR, like links of any things the users has done or any other extracurricular work)
+        - Extras (All the other relevant things needed for the HR, like links of any things the users has done 
+           For example: Give importance if user has published research, any competition achievements any other extracurricular work, etc)
         """
     )
-    #cheaper models for experimentation
+   
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
     chain = LLMChain(llm=llm, prompt=prompt_template)
@@ -70,8 +71,7 @@ def extract_resume_info(resume_text):
 
 
 
-"""## Education Checker Agent"""
-
+"""## Education Verifier Agent"""
 def verify_and_score_education(education_entry: str) -> dict:
     if not education_entry or not education_entry.strip():
         return {
@@ -190,7 +190,7 @@ def verify_all_degrees(parsed_cv: Dict[str, Any]) -> List[str]:
     return pretty_lines
 
 
-"""Agent: Get a summary of users skills"""
+"""Skills and Seniority Summary Agent"""
 
 def skills_seniority_summary(summary_sections: str) -> str:
 
@@ -204,7 +204,9 @@ def skills_seniority_summary(summary_sections: str) -> str:
 
         Provide:
         1. A simple summary of the candidate’s core strengths and what he/she brings to the table, highlight Candidate's extras where needed.
-        2. The types of roles or seniority levels they’d be a good fit for (Your best judgment of the candidate’s seniority level)
+        2. The types of roles or seniority levels they’d be a good fit for (Your best judgment of the candidate’s seniority level, 
+        Focus on the companies that the candidate has worked for too if he/she has worked for renowned big organizations/startups
+        highlight that too in case it enhances their profile).
         3. Clear sentence explaining your reasoning.
 
         Respond with 3 bullet points one for each of the above reasoning.
@@ -222,7 +224,7 @@ def skills_seniority_summary(summary_sections: str) -> str:
     return summary
 
 
-"""Agent: Writing Style Analyzer"""
+"""Writing Style Analyzer Agent"""
 
 def writing_style_analyzer(summary_sections):
 
@@ -263,14 +265,14 @@ _DECISION_PROMPT = PromptTemplate(
     You are a senior technical recruiter.
 
     You will receive a JSON blob that summarizes all automated checks
-    on a candidate’s CV: education authenticity/tier, project-plagiarism flags,
-    writing-style feedback, skills/seniority summary, etc.
+    on a candidate’s CV: education authenticity/tier, projects, research, extracurriculars,
+    writing-style feedback, work experience, skills/seniority summary, etc.
 
     Analyse the evidence and decide ONLY one of:
 
     • "Proceed"  – Candidate looks genuine and meets a decent bar.
     • "Review"   – Mixed signals; needs human review.
-    • "Reject"   – Clearly too much fluff, inconsistencies, or faked info.
+    • "Reject"   – Clearly too much fluff, inexperienced, inconsistencies, or faked info.
 
     Respond in **valid JSON strictly** EXACTLY in this format:
     {{
@@ -334,20 +336,16 @@ def verify_resume_pipeline(pdf_path: str) -> Dict[str, Any]:
 
     # Parse résumé info with our LLM
     parsed = extract_resume_info(raw_text)
-
-
-    # Education verification
     education_results = verify_all_degrees(parsed)
-
-    # Writing style analyzer
     writing_result = writing_style_analyzer(parsed)
-
     skills_seniority = skills_seniority_summary(parsed)
+    
     evidence = {
     "parsed": parsed,                                 # full CV dict
     "education_analysis": education_results,          # list from verify_all_degrees
     "writing_style_analysis": writing_result,         # plain-text
-    "skills_summary": skills_seniority             # output of skills_seniority_summary
+    "skills_summary": skills_seniority,
+     "writing_style_analysis": writing_result,             # output of skills_seniority_summary
 }
 
     decision = final_cv_decision(evidence)
